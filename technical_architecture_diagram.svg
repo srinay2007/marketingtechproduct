@@ -37,7 +37,7 @@
       <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.1"/>
     </pattern>
   </defs>
-  <rect width="1400" height="900" fill="url(#grid)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
   
   <!-- Title -->
   <text x="700" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="28" font-weight="bold">
