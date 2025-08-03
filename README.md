@@ -5,12 +5,6 @@ Collaborating with a startup to build an AI-driven marketing tech platform. Deve
 
 # Marketing Analytics Platform
 
-## Technical Architecture
-
-<p align="center">
-  <img src="./images/technical_architecture_diagram.svg" alt="Marketing Analytics Technical Architecture" width="100%">
-</p>
-
 ## Key Features
 - Real-time data pipeline using Apache Airflow
 - Multi-dimensional analysis with BigQuery
