@@ -29,7 +29,7 @@
   </defs>
   
   <!-- Background -->
-  <rect width="1400" height="900" fill="url(#bgGradient)"/>
+  <rect width="1920" height="1080" fill="url(#bgGradient)"/>
   
   <!-- Grid Pattern -->
   <defs>
