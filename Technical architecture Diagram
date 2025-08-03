@@ -1,4 +1,4 @@
-# Marketing Analytics Technical Architecture
+## Marketing Analytics Technical Architecture
 
 ## Overview
 This document describes a comprehensive marketing analytics platform designed for real-time data processing, multi-dimensional analysis, and custom dashboard generation. The architecture follows a modern data pipeline approach with cloud-native technologies.
