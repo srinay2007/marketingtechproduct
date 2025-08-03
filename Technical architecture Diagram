@@ -1,234 +1,201 @@
-# Marketing Analytics Technical Architecture
-
-## Overview
-
+Marketing Analytics Technical Architecture
+Overview
 This document describes a comprehensive marketing analytics platform designed for real-time data processing, multi-dimensional analysis, and custom dashboard generation. The architecture follows a modern data pipeline approach with cloud-native technologies.
+Architecture Components
+1. Data Sources Layer
+Google Ads API
+Purpose: Primary advertising platform data ingestion
+Data Types:
 
-## Architecture Components
+Campaign performance metrics
+Keywords and bidding data
+Performance metrics and conversion tracking
 
-### 1. Data Sources Layer
+Integration: RESTful API with OAuth 2.0 authentication
+Update Frequency: Real-time streaming capabilities
+Meta Graph API (Facebook/Instagram)
+Purpose: Social media advertising data collection
+Data Types:
 
-#### Google Ads API
-**Purpose:** Primary advertising platform data ingestion
+Ad performance metrics
+Audience engagement data
+Attribution analytics
 
-**Data Types:**
-- Campaign performance metrics
-- Keywords and bidding data  
-- Performance metrics and conversion tracking
+Integration: Graph API v18+ with webhook subscriptions
+Rate Limiting: Handles API rate limits with exponential backoff
+HubSpot API
+Purpose: CRM and marketing automation data
+Data Types:
 
-**Integration:** RESTful API with OAuth 2.0 authentication  
-**Update Frequency:** Real-time streaming capabilities
+CRM customer data
+Email marketing metrics
+Lead scoring and attribution
 
-#### Meta Graph API (Facebook/Instagram)
-**Purpose:** Social media advertising data collection
+Integration: REST API with private app authentication
+Sync Pattern: Incremental updates with change tracking
+Social Listening Tools
+Purpose: Brand monitoring and sentiment analysis
+Data Types:
 
-**Data Types:**
-- Ad performance metrics
-- Audience engagement data
-- Attribution analytics
+Brand mentions across platforms
+Sentiment analysis scores
+Competitor intelligence data
 
-**Integration:** Graph API v18+ with webhook subscriptions  
-**Rate Limiting:** Handles API rate limits with exponential backoff
+Integration: Various APIs (Brandwatch, Sprout Social, etc.)
+2. Extraction and Orchestration Layer
+Apache Airflow (Workflow Orchestration)
+Purpose: Data pipeline orchestration and scheduling
+Key Features:
 
-#### HubSpot API
-**Purpose:** CRM and marketing automation data
+DAG (Directed Acyclic Graph) management
+Scheduled ETL job execution
+Error handling and retry mechanisms
+Dependency management between tasks
 
-**Data Types:**
-- CRM customer data
-- Email marketing metrics
-- Lead scoring and attribution
+Deployment: Cloud Composer on Google Cloud Platform
+Monitoring: Built-in web UI with task status tracking
+Data Pipeline Process
 
-**Integration:** REST API with private app authentication  
-**Sync Pattern:** Incremental updates with change tracking
+API Authentication and Rate Limiting: Manages OAuth tokens and API quotas
+Data Extraction and Validation: Pulls data with schema validation
+Transformation and Normalization: Standardizes data formats and applies business rules
 
-#### Social Listening Tools
-**Purpose:** Brand monitoring and sentiment analysis
+3. Data Warehouse Layer
+BigQuery (Cloud Data Warehouse)
+Purpose: Centralized data storage and analytics processing
+Architecture:
 
-**Data Types:**
-- Brand mentions across platforms
-- Sentiment analysis scores
-- Competitor intelligence data
+Petabyte-scale analytics with serverless infrastructure
+Real-time data streaming capabilities
+SQL-based querying with standard SQL syntax
+Automated data partitioning for performance optimization
 
-**Integration:** Various APIs (Brandwatch, Sprout Social, etc.)
+Dimensional Data Model
+Fact Tables:
 
-### 2. Extraction and Orchestration Layer
+campaign_performance_daily - Daily aggregated campaign metrics
+user_engagement_events - Individual user interaction events
+conversion_attribution - Attribution modeling data
+social_sentiment_scores - Sentiment analysis results
 
-#### Apache Airflow (Workflow Orchestration)
-**Purpose:** Data pipeline orchestration and scheduling
+Dimension Tables:
 
-**Key Features:**
-- DAG (Directed Acyclic Graph) management
-- Scheduled ETL job execution
-- Error handling and retry mechanisms
-- Dependency management between tasks
+dim_user - User demographics, segments, and lifetime value
+dim_time - Date hierarchy with business calendar mapping
+dim_customer - Customer acquisition channel and cohort data
+dim_campaign - Campaign metadata, platform, and objectives
+dim_geography - Regional, market, and timezone dimensions
 
-**Deployment:** Cloud Composer on Google Cloud Platform  
-**Monitoring:** Built-in web UI with task status tracking
+Data Model Features
 
-#### Data Pipeline Process
-1. **API Authentication and Rate Limiting:** Manages OAuth tokens and API quotas
-2. **Data Extraction and Validation:** Pulls data with schema validation
-3. **Transformation and Normalization:** Standardizes data formats and applies business rules
+Star Schema Design: Optimized for analytical queries
+SCD Type 2: Historical tracking for slowly changing dimensions
+Automated Partitioning: Date-based partitioning for query performance
+Columnar Storage: Compressed storage with efficient query patterns
 
-### 3. Data Warehouse Layer
+4. Analytics and Visualization Layer
+Looker Studio (Business Intelligence)
+Purpose: Interactive dashboard creation and data visualization
+Features:
 
-#### BigQuery (Cloud Data Warehouse)
-**Purpose:** Centralized data storage and analytics processing
+Interactive dashboards with drill-down capabilities
+Real-time data refresh from BigQuery
+Custom calculated fields and metrics
+Automated report generation and distribution
 
-**Architecture:**
-- Petabyte-scale analytics with serverless infrastructure
-- Real-time data streaming capabilities
-- SQL-based querying with standard SQL syntax
-- Automated data partitioning for performance optimization
+Dashboard Categories
 
-#### Dimensional Data Model
+Executive Summary Views: High-level KPI tracking
+Campaign Performance Deep Dive: Detailed campaign analytics
+Customer Journey Analysis: Multi-touch attribution modeling
+ROI and Attribution Reports: Revenue impact analysis
 
-**Fact Tables:**
-- `campaign_performance_daily` - Daily aggregated campaign metrics
-- `user_engagement_events` - Individual user interaction events
-- `conversion_attribution` - Attribution modeling data
-- `social_sentiment_scores` - Sentiment analysis results
+5. Insights and Actions Layer
+ML Insights (Predictive Analytics)
+Purpose: AI-powered marketing optimization and forecasting
+Capabilities:
 
-**Dimension Tables:**
-- `dim_user` - User demographics, segments, and lifetime value
-- `dim_time` - Date hierarchy with business calendar mapping
-- `dim_customer` - Customer acquisition channel and cohort data
-- `dim_campaign` - Campaign metadata, platform, and objectives
-- `dim_geography` - Regional, market, and timezone dimensions
+Anomaly detection for campaign performance
+Forecasting models for budget planning
+Optimization recommendations for campaign targeting
+Predictive customer lifetime value modeling
 
-#### Data Model Features
-- **Star Schema Design:** Optimized for analytical queries
-- **SCD Type 2:** Historical tracking for slowly changing dimensions
-- **Automated Partitioning:** Date-based partitioning for query performance
-- **Columnar Storage:** Compressed storage with efficient query patterns
+Automated Actions
 
-### 4. Analytics and Visualization Layer
+Alert Notifications: Real-time performance monitoring
+Budget Optimization: Automated budget reallocation
+Performance Reports: Scheduled stakeholder updates
+Campaign Recommendations: ML-driven optimization suggestions
 
-#### Looker Studio (Business Intelligence)
-**Purpose:** Interactive dashboard creation and data visualization
+Technical Specifications
+Technology Stack
+ComponentTechnologyPurposeCloud PlatformGoogle Cloud Platform (GCP)Infrastructure and servicesOrchestrationApache Airflow (Cloud Composer)Workflow managementData WarehouseBigQueryAnalytics and storageVisualizationLooker StudioDashboards and reportingAuthenticationOAuth 2.0API securityProcessingStream processingReal-time updatesStorageColumnar storageCompressed data storageMonitoringCloud MonitoringSystem health tracking
+Key Performance Indicators
+Marketing Metrics
 
-**Features:**
-- Interactive dashboards with drill-down capabilities
-- Real-time data refresh from BigQuery
-- Custom calculated fields and metrics
-- Automated report generation and distribution
+ROAS (Return on Ad Spend) - Revenue attribution per advertising dollar
+Customer Acquisition Cost (CAC) - Cost efficiency across channels
+Lifetime Value to CAC Ratio - Long-term profitability metrics
+Multi-touch Attribution Analysis - Cross-channel impact measurement
 
-#### Dashboard Categories
-- **Executive Summary Views:** High-level KPI tracking
-- **Campaign Performance Deep Dive:** Detailed campaign analytics
-- **Customer Journey Analysis:** Multi-touch attribution modeling
-- **ROI and Attribution Reports:** Revenue impact analysis
+Business Intelligence
 
-### 5. Insights and Actions Layer
+Cross-platform Performance Comparison - Unified view across advertising platforms
+Cohort Analysis and Retention Curves - Customer behavior analytics
+Predictive Churn Modeling - Proactive customer retention
+Automated Anomaly Detection - Real-time performance monitoring
+Real-time Campaign Optimization Alerts - Immediate action triggers
 
-#### ML Insights (Predictive Analytics)
-**Purpose:** AI-powered marketing optimization and forecasting
-
-**Capabilities:**
-- Anomaly detection for campaign performance
-- Forecasting models for budget planning
-- Optimization recommendations for campaign targeting
-- Predictive customer lifetime value modeling
-
-#### Automated Actions
-- **Alert Notifications:** Real-time performance monitoring
-- **Budget Optimization:** Automated budget reallocation
-- **Performance Reports:** Scheduled stakeholder updates
-- **Campaign Recommendations:** ML-driven optimization suggestions
-
-## Technical Specifications
-
-### Technology Stack
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| Cloud Platform | Google Cloud Platform (GCP) | Infrastructure and services |
-| Orchestration | Apache Airflow (Cloud Composer) | Workflow management |
-| Data Warehouse | BigQuery | Analytics and storage |
-| Visualization | Looker Studio | Dashboards and reporting |
-| Authentication | OAuth 2.0 | API security |
-| Processing | Stream processing | Real-time updates |
-| Storage | Columnar storage | Compressed data storage |
-| Monitoring | Cloud Monitoring | System health tracking |
-
-### Key Performance Indicators
-
-#### Marketing Metrics
-- **ROAS (Return on Ad Spend)** - Revenue attribution per advertising dollar
-- **Customer Acquisition Cost (CAC)** - Cost efficiency across channels
-- **Lifetime Value to CAC Ratio** - Long-term profitability metrics
-- **Multi-touch Attribution Analysis** - Cross-channel impact measurement
-
-#### Business Intelligence
-- **Cross-platform Performance Comparison** - Unified view across advertising platforms
-- **Cohort Analysis and Retention Curves** - Customer behavior analytics
-- **Predictive Churn Modeling** - Proactive customer retention
-- **Automated Anomaly Detection** - Real-time performance monitoring
-- **Real-time Campaign Optimization Alerts** - Immediate action triggers
-
-## Data Flow Architecture
-
-```
+Data Flow Architecture
 Data Sources → Extraction & Orchestration → Data Warehouse → Analytics & Visualization → Insights & Actions
-```
 
-1. **Ingestion:** Multiple API sources stream data continuously
-2. **Processing:** Apache Airflow orchestrates ETL workflows
-3. **Storage:** BigQuery serves as the central data warehouse
-4. **Analytics:** Looker Studio provides interactive visualization
-5. **Intelligence:** ML models generate predictive insights
-6. **Action:** Automated alerts and optimization recommendations
+Ingestion: Multiple API sources stream data continuously
+Processing: Apache Airflow orchestrates ETL workflows
+Storage: BigQuery serves as the central data warehouse
+Analytics: Looker Studio provides interactive visualization
+Intelligence: ML models generate predictive insights
+Action: Automated alerts and optimization recommendations
 
-## Scalability and Performance
+Scalability and Performance
+FeatureSpecificationLatencySub-minute latency for critical metricsAnalysisMulti-dimensional complex analytical queriesScalingServerless architecture with automatic resource allocationAvailability99.9% uptime SLA with disaster recoveryGovernanceRole-based access control and audit logging
+Security and Compliance
 
-| Feature | Specification |
-|---------|---------------|
-| Latency | Sub-minute latency for critical metrics |
-| Analysis | Multi-dimensional complex analytical queries |
-| Scaling | Serverless architecture with automatic resource allocation |
-| Availability | 99.9% uptime SLA with disaster recovery |
-| Governance | Role-based access control and audit logging |
+Authentication: OAuth 2.0 and service account authentication
+Encryption: Data encrypted in transit and at rest
+Access Control: IAM-based permissions with principle of least privilege
+Compliance: GDPR and CCPA compliance for customer data handling
+Monitoring: Comprehensive logging and security monitoring
 
-## Security and Compliance
+Deployment and Maintenance
 
-- **Authentication:** OAuth 2.0 and service account authentication
-- **Encryption:** Data encrypted in transit and at rest
-- **Access Control:** IAM-based permissions with principle of least privilege
-- **Compliance:** GDPR and CCPA compliance for customer data handling
-- **Monitoring:** Comprehensive logging and security monitoring
+Infrastructure as Code: Terraform for resource provisioning
+CI/CD Pipeline: Automated testing and deployment
+Monitoring: Real-time system health and performance tracking
+Backup and Recovery: Automated backup with point-in-time recovery
+Documentation: Comprehensive API and system documentation
 
-## Deployment and Maintenance
+Getting Started
+Prerequisites
 
-- **Infrastructure as Code:** Terraform for resource provisioning
-- **CI/CD Pipeline:** Automated testing and deployment
-- **Monitoring:** Real-time system health and performance tracking
-- **Backup and Recovery:** Automated backup with point-in-time recovery
-- **Documentation:** Comprehensive API and system documentation
+Google Cloud Platform account with billing enabled
+Terraform >= 1.0
+Apache Airflow knowledge
+BigQuery and Looker Studio access
 
-## Getting Started
+Quick Setup
 
-### Prerequisites
-- Google Cloud Platform account with billing enabled
-- Terraform >= 1.0
-- Apache Airflow knowledge
-- BigQuery and Looker Studio access
+Clone the repository
+Configure GCP credentials
+Run Terraform deployment
+Configure API connections in Airflow
+Import Looker Studio templates
 
-### Quick Setup
-1. Clone the repository
-2. Configure GCP credentials
-3. Run Terraform deployment
-4. Configure API connections in Airflow
-5. Import Looker Studio templates
+Configuration Files
 
-### Configuration Files
-- `terraform/` - Infrastructure as code
-- `airflow/dags/` - ETL workflow definitions
-- `sql/` - BigQuery schema and transformations
-- `dashboards/` - Looker Studio templates
+terraform/ - Infrastructure as code
+airflow/dags/ - ETL workflow definitions
+sql/ - BigQuery schema and transformations
+dashboards/ - Looker Studio templates
 
-## Support and Contributing
-
+Support and Contributing
 For questions and support, please create an issue in this repository. Contributions are welcome via pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
